@@ -2,24 +2,22 @@ package com.example.shoppinglist
 
 import ItemInput
 import SearchInput
-import ShoppingList
-import android.icu.text.CaseMap
-import android.os.Build
+import com.example.shoppinglist.components.AnimatedShoppingListItem
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,9 +29,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.shoppinglist.ui.theme.ShoppingListTheme
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,16 +102,51 @@ fun ShoppingListApp() {
 fun Title() {
     Text(
         text = "Shopping List",
-        style = MaterialTheme.typography.titleLarge
+        style = MaterialTheme.typography.headlineMedium, // lebih besar dari titleLarge
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 24.dp, bottom = 16.dp),
+        textAlign = androidx.compose.ui.text.style.TextAlign.Center
     )
 }
 
-// Dummy Composable agar tidak error (nanti bisa kamu isi sesuai kebutuhan)
-@Composable
-fun ItemInput(text: String, onTextChange: (String)->Unit, onAddItem: ()->Unit) { }
 
 @Composable
-fun SearchInput(query: String, onQueryChange: (String)->Unit) { }
+fun ItemInput(text: String, onTextChange: (String)->Unit, onAddItem: ()->Unit) {
+    androidx.compose.foundation.layout.Row(
+        modifier = Modifier.fillMaxSize(),
+        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)
+    ) {
+        OutlinedTextField(
+            value = text,
+            onValueChange = onTextChange,
+            label = { Text("Add new item") },
+            modifier = Modifier.weight(1f)
+        )
+        Button(onClick = onAddItem) {
+            Text("+ Add")
+        }
+    }
+}
 
 @Composable
-fun ShoppingList(items: List<String>) { }
+fun SearchInput(query: String, onQueryChange: (String)->Unit) {
+    OutlinedTextField(
+        value = query,
+        onValueChange = onQueryChange,
+        label = { Text("Search items") },
+        modifier = Modifier.fillMaxSize()
+    )
+}
+
+@Composable
+fun ShoppingList(items: List<String>) {
+    LazyColumn(
+        verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)
+    ) {
+        items(items, key = { it }) { item ->
+            AnimatedShoppingListItem(item = item)
+        }
+    }
+}
