@@ -1,4 +1,4 @@
-package com.example.shoppinglist.components
+package com.example.shoppinglist.component
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
