@@ -5,10 +5,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -20,6 +22,9 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -103,7 +108,6 @@ fun MainScreen() {
         }
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -209,14 +213,17 @@ fun ProfileScreen() {
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(
-            imageVector = Icons.Default.Person,
-            contentDescription = "Foto Diri",
+        // 🩵 Tambahan: Foto profil dari drawable
+        Image(
+            painter = painterResource(id = R.drawable.alya_profile), // ganti sesuai nama file kamu
+            contentDescription = "Foto Alya Zulhanifa",
             modifier = Modifier
-                .size(120.dp)
+                .size(160.dp)
+                .clip(CircleShape)
                 .padding(8.dp),
-            tint = MaterialTheme.colorScheme.primary
+            contentScale = ContentScale.Crop
         )
+
         Spacer(modifier = Modifier.height(12.dp))
         Text("Alya Zulhanifa", fontSize = 22.sp, fontWeight = FontWeight.Bold)
         Text("NIM: 2311523028", fontSize = 16.sp)
